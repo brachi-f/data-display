@@ -1,6 +1,6 @@
 import * as actions from './action.jsx'
 
-initialState = {
+const initialState = {
     user: null
 }
 

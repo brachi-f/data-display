@@ -3,7 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import Home from './Home.jsx'
+import Home from './pages/Home.jsx'
+import Login from './pages/Login.jsx'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </>
   )

@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './store/store.jsx'
 import Header from './Header.jsx'
+import 'semantic-ui-css/semantic.min.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
