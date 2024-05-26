@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Bar } from 'react-chartjs-2';
-import * as linkService from '../services/linkService.jsx';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import * as linkService from '../services/linkService.jsx'
+import { Bar } from "react-chartjs-2";
 
 const ClicksChart = () => {
     const user = useSelector(state => state.user);
     const [chartData, setChartData] = useState(null);
-
+    const [options, setOptions] = useState(null)
     useEffect(() => {
         if (user) {
             linkService.getUserLinks(user.id)
                 .then(res => {
-                    const links = res.data;
-                    const labels = links.map(link => link.originalURL);
-                    const clicksData = links.map(link => link.clicks.length);
+                     const links = res.data;
+                    const labels = links.map(link => link.id);
+                    const clicksData = links.map(link => link.clicks.length || 0);
                     const data = {
                         labels: labels,
                         datasets: [
@@ -26,6 +26,17 @@ const ClicksChart = () => {
                         ],
                     };
                     setChartData(data);
+                    setOptions({
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                },
+                                max: Math.max(...clicksData) + 5
+                            }
+                        }
+                    })
                 })
                 .catch(error => console.error('Error fetching user links:', error));
         }
@@ -33,7 +44,7 @@ const ClicksChart = () => {
 
     return (
         <div>
-            {chartData && <Bar data={chartData} />}
+            {chartData && options ? <Bar data={chartData} options={options} /> : <></>}
         </div>
     );
 };
