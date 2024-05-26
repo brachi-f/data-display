@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as linkService from '../services/linkService.jsx';
 import { Pie } from "react-chartjs-2";
 
-const generateRandomColors = (count) => {
+export const generateRandomColors = (count) => {
     const colors = [];
     for (let i = 0; i < count; i++) {
         const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.6)`;
