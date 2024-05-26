@@ -6,14 +6,16 @@ import Swal from 'sweetalert2'
 import { useDispatch } from 'react-redux'
 import * as actions from '../store/action.jsx'
 
-const Login = () => {
+const Register = () => {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const handleLogin = () => {
-        userService.Login({ email, password }).then(res => {
+
+    const handleRegister = () => {
+        userService.Register({ name, email, password }).then(res => {
             console.log("res.data", res.data)
             localStorage.setItem("accessToken", res.data.accessToken)
             const token = userService.getTokenData()
@@ -21,15 +23,15 @@ const Login = () => {
                 dispatch({ type: actions.SETUSER, data: res.data })
                 Swal.fire({
                     icon: 'success',
-                    timer:1500,
-                    showConfirmButton:false,
-                    title: `wellcome ${res.data.name}!!!`,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    title: `Welcome ${res.data.name}!!!`,
                     position: 'bottom-right'
                 })
                 navigate('/home')
             }).catch(e => console.error("ERROR: ", e.message))
         }).catch(e => {
-            if (e.status == 401)
+            if (e.status === 409)
                 Swal.fire({
                     icon: 'error',
                     showConfirmButton: false,
@@ -51,19 +53,27 @@ const Login = () => {
         setEmailError(!validateEmail(email))
     }
 
-    const isFormValid = email && password && !emailError
+    const isFormValid = name && email && password && !emailError
 
     return (
         <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Header as='h2' color='teal' textAlign='center'>
-                    Log-in to your account
+                    Register for a new account
                 </Header>
                 <Form size='large'>
                     <Segment stacked>
                         <FormInput
                             fluid
                             icon='user'
+                            iconPosition='left'
+                            placeholder='Name'
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <FormInput
+                            fluid
+                            icon='mail'
                             iconPosition='left'
                             placeholder='E-mail address'
                             value={email}
@@ -84,19 +94,19 @@ const Login = () => {
                             color='teal'
                             fluid
                             size='large'
-                            onClick={handleLogin}
+                            onClick={handleRegister}
                             disabled={!isFormValid}
                         >
-                            Login
+                            Register
                         </Button>
                     </Segment>
                 </Form>
                 <Message>
-                    New to us? <a onClick={() => navigate('/signup')}>Sign Up</a>
+                    Already have an account? <a onClick={() => navigate('/login')}>Login</a>
                 </Message>
             </Grid.Column>
         </Grid>
     )
 }
 
-export default Login
+export default Register
