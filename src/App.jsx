@@ -11,6 +11,7 @@ import * as linkService from './services/linkService.jsx'
 import * as actions from './store/action.jsx'
 import LinkDetails from './links/LinkDetails.jsx'
 import Charts from './charts/Charts.jsx'
+import GraphOptionMenu from './charts/GraphOptionMenu.jsx'
 
 function App() {
   const user = useSelector(s => s.user)
@@ -31,7 +32,7 @@ function App() {
         <Route path='/add-link' element={<AddLink />} />
         <Route path="/links" element={<LinksList />} />
         <Route path='/links/:id' element={<LinkDetails />} />
-        <Route path='/data-analysis' element={<Charts />} />
+        <Route path='/data-analysis' element={<GraphOptionMenu />} />
       </Routes>
     </>
   )

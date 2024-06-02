@@ -24,6 +24,7 @@ const Header = () => {
                                 title: `Goodbye ${user.name}`
                             })
                             dispatch({ type: actions.SETUSER, data: null })
+                            navigate('/home')
                         }}
                     >
                         <Icon name="user close" />

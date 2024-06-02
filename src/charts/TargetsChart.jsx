@@ -17,32 +17,38 @@ const TargetsChart = ({ linkId }) => {
     const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
-        if (user) {
+        if (user && linkId) {
+            console.log(`Fetching data for linkId: ${linkId}`);
             linkService.getLinkById(linkId).then(res => {
                 const link = res.data;
-                const labels = link.targetValues?.map(t => t.name);
-                const targetsData = link.targetValues?.map(t => t.value);
-                const backgroundColors = generateRandomColors(labels.length);
+                console.log('Fetched link data:', link);
+                if (link.targetValues && link.targetValues.length > 0) {
+                    const labels = link.targetValues.map(t => t.name);
+                    const targetsData = link.targetValues.map(t => t.value);
+                    const backgroundColors = generateRandomColors(labels.length);
 
-                const data = {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Targets',
-                            data: targetsData,
-                            backgroundColor: backgroundColors,
-                            borderWidth: 1,
-                        },
-                    ],
-                };
-                setChartData(data);
-            }).catch(e => console.error("ERROR:", e.message));
+                    const data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Targets',
+                                data: targetsData,
+                                backgroundColor: backgroundColors,
+                                borderWidth: 1,
+                            },
+                        ],
+                    };
+                    setChartData(data);
+                } else {
+                    console.log('No target values found for this link');
+                }
+            }).catch(e => console.error("ERROR fetching link data:", e.message));
         }
     }, [user, linkId]);
 
     return (
         <div>
-            {chartData ? <Pie data={chartData} /> : <></>}
+            {chartData ? <Pie data={chartData} /> : <p>No data available for this link</p>}
         </div>
     );
 };

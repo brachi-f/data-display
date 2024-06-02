@@ -14,27 +14,24 @@ const ClicksByDayChart = () => {
             linkService.getUserLinks(user.id)
                 .then(res => {
                     const links = res.data;
-                    const dayClicks = links.map(() => Array(7).fill(0));                    let i = 0;
+                    const dayClicks = links.map(() => Array(7).fill(0));
+                    let i = 0;
                     links.forEach(link => {
                         link.clicks.forEach(click => {
-                            const clickDate = new Date(click.insertedAt)
-                            const day = clickDate.getDay()
+                            const clickDate = new Date(click.insertedAt);
+                            const day = clickDate.getDay();
                             dayClicks[i][day]++;
                         });
                         i++;
                     });
                     const data = {
                         labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-                        datasets:
-                            links.map((l, index) =>
-                            ({
-                                label: l.id,
-                                data: dayClicks[index],
-                                // backgroundColor: generateRandomColors(1),
-                                borderColor: generateRandomColors(1),
-                                fill: false,
-                            }))
-                        ,
+                        datasets: links.map((l, index) => ({
+                            label: l.id,
+                            data: dayClicks[index],
+                            borderColor: generateRandomColors(1),
+                            fill: false,
+                        })),
                     };
                     setChartData(data);
                 })
